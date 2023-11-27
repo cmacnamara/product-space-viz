@@ -1,5 +1,5 @@
 // components
-import { NetworkDiagram } from './components/NetworkDiagram'
+import { NetworkDiagram } from './components/NetworkDiagram/NetworkDiagram'
 
 // styles
 import './App.css'
@@ -8,13 +8,13 @@ const data: number[] = []
 
 function App() {
   return (
-    <>
+    <div className='mainContainer'>
       <NetworkDiagram 
         width={3000}
         height={3000}
         data={data}
       />
-    </>
+    </div>
   )
 }
 

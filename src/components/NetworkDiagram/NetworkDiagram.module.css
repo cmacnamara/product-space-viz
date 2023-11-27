@@ -1,0 +1,19 @@
+.svgContainer {
+  /* display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden; */
+  width: 75vw;
+  height: 55vw;
+  border: 2px solid white
+}
+
+.svgContent {
+  height: 100vw;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
