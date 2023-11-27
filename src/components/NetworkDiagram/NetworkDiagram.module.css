@@ -17,3 +17,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.node:hover {
+  cursor: pointer;
+  stroke-width: '3px';
+  stroke: red;
+}

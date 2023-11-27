@@ -3,6 +3,7 @@ import { NetworkDiagram } from './components/NetworkDiagram/NetworkDiagram'
 
 // styles
 import './App.css'
+import 'react-tooltip/dist/react-tooltip.css'
 
 const data: number[] = []
 

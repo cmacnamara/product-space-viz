@@ -1,5 +1,5 @@
 // Node modules
-import * as d3 from "d3";
+import { Tooltip } from "react-tooltip";
 
 // Helper functions
 import {  printNodes, printMetadata } from '../../data-processor.ts'
@@ -30,48 +30,70 @@ const hs92ColorsMap = new Map([
 const nodesAndEdges = await printNodes()
 const metadata = await printMetadata()
 
-//console.log(nodes);
-//console.log("Metadata", metadata.productHs92);
-
-const nodes = nodesAndEdges.nodes.map(node => {
-  return node
-})
-
 const nodesWithMetadata = metadata.productHs92.map(product => {
   const correspondingNode = nodesAndEdges.nodes.find(node => {
-    console.log("Current node:", node);
-    
-    node.productId === product.productId
+    return node.productId === product.productId
   })
-  const nodeWithMetadata = {...product, ...correspondingNode}
+
+  const color = hs92ColorsMap.get(product.productSector.productId)
+  
+  const nodeWithMetadata = {...product, ...correspondingNode, color: color}
+
   return nodeWithMetadata
 })
 
-console.log("NWMD", nodesWithMetadata);
+const edgesWithMetadata = nodesAndEdges.edges.map(edge => {
+  const sourceNode = nodesWithMetadata.find(node => {
+    return node.productId === edge.source
+  })
+  const targetNode = nodesWithMetadata.find(node => {
+    return node.productId === edge.target
+  })
+
+  const edgeWithMetadata = {...edge, x1: sourceNode.x, y1: sourceNode.y, x2: targetNode.x, y2: targetNode.y}
+
+  return edgeWithMetadata
+})
+
+console.log("NWMD:", nodesWithMetadata);
 
 
 export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => {
 
-  // read the data
-  // compute the nodes position using a d3-force
-  // build the links
-  // build the nodes
-
   return (
     <div className={styles.svgContainer}>
       <svg className={styles.svgContent} viewBox="850 1500 3000 3000" preserveAspectRatio="xMinYMin meet">
-        {nodesAndEdges.nodes.map((node,idx) => 
-          <circle 
+        {edgesWithMetadata.map((edge,idx) => 
+          <line
             key={idx}
-            r='4px'
-            cx={node.x}
-            cy={node.y}
-            fill='black'
-            stroke='#CCCCCC'
+            x1={edge.x1}
+            y1={edge.y1}
+            x2={edge.x2}
+            y2={edge.y2}
+            stroke="#CCCCCC"
             strokeWidth='1px'
           />
         )}
+        {nodesWithMetadata.map((node,idx) => 
+        <>
+          <circle 
+            key={idx}
+            className={styles.node}
+            r='4px'
+            cx={node.x}
+            cy={node.y}
+            fill={node.color}
+            stroke='#CCCCCC'
+            strokeWidth='1px'
+            data-tooltip-id='my-tooltip'
+            // data-tooltip-content={`${node.productName} (${node.productCode})`}
+            data-tooltip-content={`${node.productName} (${node.productCode})`}
+            data-tooltip-place="top" 
+          />
+        </>
+        )}
       </svg>
+      <Tooltip id='my-tooltip'/>
     </div>
   );
 };
