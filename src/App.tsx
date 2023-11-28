@@ -10,6 +10,7 @@ const data: number[] = []
 function App() {
   return (
     <div className='mainContainer'>
+      <h1>Product Space Visualization</h1>
       <NetworkDiagram 
         width={3000}
         height={3000}

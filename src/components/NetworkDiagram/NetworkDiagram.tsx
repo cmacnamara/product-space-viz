@@ -120,9 +120,11 @@ export const NetworkDiagram = () => {
     setEdges(newEdges)
   }
 
-  return (
+  if(!nodes.length || !edges.length) return (<h2>Loading...</h2>)
+  
+  else return (
     <div className={styles.svgContainer}>
-      <svg className={styles.svgContent} viewBox="850 1500 3000 3000" preserveAspectRatio="xMinYMin meet">
+      <svg className={styles.svgContent} viewBox="850 1500 1600 1600" preserveAspectRatio="xMinYMin meet">
         {edges.map((edge,idx: number) => 
           <line
             key={idx}
@@ -133,23 +135,23 @@ export const NetworkDiagram = () => {
             y2={edge.y2}
           />
         )}
-        {nodes.map((node,idx: number) => 
         <>
-          <circle 
-            key={idx}
-            className={node.isHighlighted ? styles.highlightedNode : styles.node}
-            onMouseEnter={() => handleHover(node.productId)}
-            onMouseLeave={() => handleMouseLeave(node.productId)}
-            r='4px'
-            cx={node.x}
-            cy={node.y}
-            fill={node.color}
-            data-tooltip-id='my-tooltip'
-            data-tooltip-content={`${node.productName} (${node.productCode})`}
-            data-tooltip-place="top"
-          />
+          {nodes.map((node,idx: number) => 
+            <circle 
+              key={idx}
+              className={node.isHighlighted ? styles.highlightedNode : styles.node}
+              onMouseEnter={() => handleHover(node.productId)}
+              onMouseLeave={() => handleMouseLeave(node.productId)}
+              r='4px'
+              cx={node.x}
+              cy={node.y}
+              fill={node.color}
+              data-tooltip-id='my-tooltip'
+              data-tooltip-content={`${node.productName} (${node.productCode})`}
+              data-tooltip-place="top"
+            />
+            )}
         </>
-        )}
       </svg>
       <Tooltip id='my-tooltip'/>
     </div>
