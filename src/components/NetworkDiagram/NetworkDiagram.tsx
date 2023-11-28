@@ -67,6 +67,9 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
   const [nodes, setNodes] = useState(nodesWithMetadata.map(node => {
     return {...node, isHighlighted: false}
   }))
+  const [edges, setEdges] = useState(edgesWithMetadata.map(edge => {
+    return {...edge, isHighlighted: false}
+  }))
 
   const handleHover = (productId) => {
     const currentNode = nodes.find(node => {
@@ -84,7 +87,17 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
         return {...node}
       }
     })
+
+    const newEdges = edges.map(edge => {
+      if(edge.source === productId || edge.target === productId) {
+        return {...edge, isHighlighted: true}
+      } else {
+        return {...edge}
+      }
+    })
+
     setNodes(newNodes)
+    setEdges(newEdges)
   }
 
   const handleMouseLeave = productId => {
@@ -102,21 +115,30 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
         return {...node}
       }
     })
+
+    const newEdges = edges.map(edge => {
+      if(edge.source === productId || edge.target === productId) {
+        return {...edge, isHighlighted: false}
+      } else {
+        return {...edge}
+      }
+    })
+
     setNodes(newNodes)
+    setEdges(newEdges)
   }
 
   return (
     <div className={styles.svgContainer}>
       <svg className={styles.svgContent} viewBox="850 1500 3000 3000" preserveAspectRatio="xMinYMin meet">
-        {edgesWithMetadata.map((edge,idx) => 
+        {edges.map((edge,idx) => 
           <line
             key={idx}
+            className={edge.isHighlighted ? styles.highlightedEdge : styles.edge}
             x1={edge.x1}
             y1={edge.y1}
             x2={edge.x2}
             y2={edge.y2}
-            stroke="#CCCCCC"
-            strokeWidth='1px'
           />
         )}
         {nodes.map((node,idx) => 

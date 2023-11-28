@@ -27,3 +27,13 @@
   stroke: red;
   stroke-width: 3px;
 }
+
+.edge {
+ stroke: #CCCCCC;
+ stroke-width: 1px;
+}
+
+.highlightedEdge {
+ stroke: red;
+ stroke-width: 3px;
+}
