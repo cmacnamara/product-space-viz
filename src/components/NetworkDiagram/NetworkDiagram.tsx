@@ -8,12 +8,6 @@ import {  getNodes, getMetadata } from '../../data-processor.ts'
 // styles
 import styles from './NetworkDiagram.module.css'
 
-type NetworkDiagramProps = {
-  width: number;
-  height: number;
-  data: number[];
-};
-
 const hs92ColorsMap = new Map([
   ['product-HS92-1', 'rgb(125, 218, 161)'],
   ['product-HS92-2', '#F5CF23'],
@@ -60,10 +54,8 @@ const edgesWithMetadata = nodesAndEdges.edges.map(edge => {
   return edgeWithMetadata
 })
 
-//console.log("NWMD:", nodesWithMetadata);
 
-
-export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => {
+export const NetworkDiagram = () => {
   const [nodes, setNodes] = useState(nodesWithMetadata.map(node => {
     return {...node, isHighlighted: false}
   }))
@@ -71,7 +63,7 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
     return {...edge, isHighlighted: false}
   }))
 
-  const handleHover = (productId) => {
+  const handleHover = (productId: string) => {
     const currentNode = nodes.find(node => {
       return node.productId === productId
     })
@@ -100,7 +92,7 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
     setEdges(newEdges)
   }
 
-  const handleMouseLeave = productId => {
+  const handleMouseLeave = (productId: string) => {
     const currentNode = nodes.find(node => {
       return node.productId === productId
     })
@@ -131,7 +123,7 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
   return (
     <div className={styles.svgContainer}>
       <svg className={styles.svgContent} viewBox="850 1500 3000 3000" preserveAspectRatio="xMinYMin meet">
-        {edges.map((edge,idx) => 
+        {edges.map((edge,idx: number) => 
           <line
             key={idx}
             className={edge.isHighlighted ? styles.highlightedEdge : styles.edge}
@@ -141,7 +133,7 @@ export const NetworkDiagram = ({ width, height, data }: NetworkDiagramProps) => 
             y2={edge.y2}
           />
         )}
-        {nodes.map((node,idx) => 
+        {nodes.map((node,idx: number) => 
         <>
           <circle 
             key={idx}
