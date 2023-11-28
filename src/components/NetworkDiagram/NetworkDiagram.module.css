@@ -18,8 +18,12 @@
   justify-content: center;
 }
 
-.node:hover {
-  cursor: pointer;
-  stroke-width: '3px';
+.node {
+  stroke: #CCCCCC;
+  stroke-width: 1px;
+}
+
+.highlightedNode {
   stroke: red;
+  stroke-width: 3px;
 }
